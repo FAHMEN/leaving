@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Countdown Kelulusan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ff;
+      --accent: #00f5a0;
+      --background: #000212;
+      --text: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.05);
+    }* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+  background: linear-gradient(145deg, #0ff, #00f5a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  animation: fadeInTop 1.2s ease-out;
+}
+
+@keyframes fadeInTop {
+  0% { opacity: 0; transform: translateY(-30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 1s ease-in;
+}
+
+.countdown {
+  font-size: 3rem;
+  margin: 2rem 0;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+}
+
+.motivasi {
+  max-width: 900px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--primary);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  font-size: 1.5rem;
+  min-height: 80px;
+  position: relative;
+}
+
+.motivasi p {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeMotivasi 1s forwards;
+}
+
+@keyframes fadeMotivasi {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-area {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid var(--accent);
+  text-align: center;
+}
+
+textarea {
+  width: 90%;
+  height: 120px;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background-color: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  resize: none;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #000;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px var(--primary);
+}
+
+.music-control {
+  margin-top: 3rem;
+}
+
+audio {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    Hitung Mundur Menuju Kebebasan dan Masa Depanmu
+  </header>
+  <div class="container">
+    <div class="countdown" id="countdown"></div><div class="motivasi" id="motivasi">
+  <p id="motivasiText">💡 Loading motivasi...</p>
+</div>
+
+<div class="note-area">
+  <h2>Tulis Pesan untuk Dirimu di Masa Depan</h2>
+  <textarea id="note" placeholder="Tulis semangat, impian, atau pesan untuk dirimu nanti..."></textarea>
+  <br />
+  <button onclick="saveNote()">Simpan Catatan</button>
+</div>
+
+<div class="music-control">
+  <button onclick="toggleMusic()">🎵 Play / Pause Musik Motivasi</button>
+  <audio id="motivasiMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-epic.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung audio.
+  </audio>
+</div>
+
+  </div>  <script>
+    const graduationDate = new Date("2027-05-01T07:00:00").getTime();
+    const countdownEl = document.getElementById("countdown");
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = graduationDate - now;
+
+      if (distance <= 0) {
+        countdownEl.innerHTML = "🎓 Kamu sudah lulus! Selamat! 🎉";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.innerHTML = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
+    }
+    setInterval(updateCountdown, 1000);
+
+    // Animasi motivasi berubah tiap 7 detik
+    const motivasiList = [
+      "Kamu lebih kuat dari apa yang kamu pikirkan.",
+      "Lingkungan tidak menentukan masa depanmu, kamu yang menentukannya.",
+      "Setiap detik adalah investasi untuk dirimu yang sukses.",
+      "Jangan menunggu motivasi, bangun disiplin.",
+      "Sukses itu bukan bakat, tapi pilihan dan konsistensi.",
+      "Kamu tidak terjebak, kamu sedang diproses.",
+      "Kelulusan bukan akhir, tapi awal dari kehidupan luar biasa.",
+      "Semakin keras kamu bekerja diam-diam, semakin keras hasilmu bersuara.",
+      "Kamu tidak hidup untuk menyenangkan mereka, tapi untuk menjalankan misimu.",
+      "1 tahun 10 bulan lagi, kamu bisa ubah hidupmu sepenuhnya. Fokus!"
+    ];
+
+    let motivasiIndex = 0;
+    const motivasiText = document.getElementById("motivasiText");
+
+    function showNextMotivasi() {
+      motivasiText.style.opacity = 0;
+      setTimeout(() => {
+        motivasiText.innerHTML = `💡 ${motivasiList[motivasiIndex]}`;
+        motivasiText.style.animation = "none";
+        void motivasiText.offsetWidth; // reset animation
+        motivasiText.style.animation = "fadeMotivasi 1s forwards";
+        motivasiIndex = (motivasiIndex + 1) % motivasiList.length;
+      }, 500);
+    }
+
+    setInterval(showNextMotivasi, 7000);
+    window.onload = showNextMotivasi;
+
+    const noteEl = document.getElementById("note");
+    window.onload = () => {
+      const savedNote = localStorage.getItem("motivasi_note");
+      if (savedNote) noteEl.value = savedNote;
+      showNextMotivasi();
+    };
+
+    function saveNote() {
+      localStorage.setItem("motivasi_note", noteEl.value);
+      alert("Catatanmu tersimpan di browser. Jangan menyerah!");
+    }
+
+    const music = document.getElementById("motivasiMusic");
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
+    }
+  </script></body>
+</html>
